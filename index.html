@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>사이버감사실 제보 페이지(초안)</title>
+  <style>
+    :root{--bg:#f5f7fb;--card:#ffffff;--accent:#0b6efd;--muted:#6b7280}
+    body{font-family:Inter, "Noto Sans KR", system-ui, -apple-system, Arial; background:var(--bg); margin:0; color:#111}
+    .container{max-width:900px;margin:48px auto;padding:24px}
+    header{display:flex;align-items:center;gap:16px}
+    .logo{width:60px;height:60px;border-radius:8px;background:linear-gradient(135deg,#0b6efd,#7cc1ff);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+    h1{margin:0;font-size:20px}
+    p.lead{color:var(--muted);margin-top:8px}
+
+    .card{background:var(--card);border-radius:12px;padding:20px;margin-top:20px;box-shadow:0 6px 18px rgba(10,20,40,0.06)}
+    h2{margin:0 0 12px 0}
+    ul{padding-left:20px}
+
+    .btn{display:inline-block;padding:10px 16px;border-radius:8px;background:var(--accent);color:#fff;text-decoration:none;border:none;cursor:pointer}
+    .btn.secondary{background:#eee;color:#111}
+
+    .footer-note{font-size:13px;color:var(--muted);margin-top:16px}
+
+    /* modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:none;align-items:center;justify-content:center;padding:20px}
+    .modal{width:100%;max-width:720px;background:var(--card);border-radius:12px;padding:20px;box-shadow:0 12px 30px rgba(10,20,40,0.3); max-height:90vh; overflow-y:auto;}
+    .modal h3{margin-top:0}
+    .flex{display:flex;gap:12px}
+    .field{margin-bottom:12px}
+    label{display:block;font-weight:600;margin-bottom:6px}
+    input[type=text], input[type=email], textarea, input[type=tel]{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef}
+    textarea{min-height:120px}
+
+    .consent-box{border:1px solid #e6e9ef;border-radius:8px;padding:0;overflow:hidden}
+    .consent-scroll{max-height:120px;overflow:auto;padding:12px;background:#fafbfd;border-bottom:1px solid #e6e9ef}
+    .consent-actions{padding:12px;display:flex;align-items:center;gap:12px}
+
+    .row{display:flex;gap:12px}
+    .col{flex:1}
+    .small{font-size:13px;color:var(--muted)}
+
+    .hidden{display:none}
+
+    .note-success{color:green;font-weight:600}
+
+    .code-box{display:inline-block;padding:8px 10px;border-radius:6px;background:#f1f7ff;border:1px solid #d6eaff;font-family:monospace}
+
+    /* responsive */
+    @media (max-width:600px){.row{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">감사</div>
+      <div>
+        <h1>사이버감사실 — 제보 안내</h1>
+        <p class="lead">제보유형과 제보절차 안내 및 제보 버튼(임시 시안)</p>
+      </div>
+    </header>
+
+    <div class="card">
+      <h2>제보유형</h2>
+      <ul>
+        <li><strong>부정·비리 제보</strong> : 횡령, 뇌물, 이익충돌 등</li>
+        <li><strong>업무상 비정상적 행위</strong> : 규정 위반, 권한 남용 등</li>
+        <li><strong>기타 윤리 위반</strong> : 괴롭힘·성희롱 등</li>
+      </ul>
+
+      <h2 style="margin-top:16px">제보절차</h2>
+      <ol>
+        <li>제보자는 아래 <em>제보하기</em> 버튼을 클릭하여 제보창을 연다.</li>
+        <li>개인정보 수집·이용 동의 후 실명/익명 중 선택한다.</li>
+        <li>이메일 인증(필수)을 완료한다.</li>
+        <li>제보를 제출하면 내부 담당자에게 이메일로 전달된다.</li>
+      </ol>
+
+      <div style="margin-top:18px">
+        <button id="openBtn" class="btn">제보하기</button>
+        <button class="btn secondary" onclick="document.getElementById('preview').scrollIntoView({behavior:'smooth'})">레이아웃 미리보기</button>
+      </div>
+
+      <p class="footer-note">※ 본 페이지는 디자인 시안입니다. 실제 운영 시에는 서버 측 이메일 전송 및 로그 저장, CSRF·XSS 등 보안 검토가 필요합니다.</p>
+    </div>
+
+    <div id="preview" class="card" style="margin-top:20px">
+      <h2>하단 예시: 제보하기 모달 미리보기</h2>
+      <p class="small">아래 모달은 버튼 클릭 시 뜨는 창을 시각적으로 예시한 것입니다.</p>
+    </div>
+
+  </div>
+
+  <!-- Modal -->
+  <div id="backdrop" class="modal-backdrop" role="dialog" aria-hidden="true">
+    <div class="modal" role="document" aria-labelledby="modalTitle">
+      <h3 id="modalTitle">제보하기</h3>
+      <div class="field">
+        <label>개인정보 수집 및 이용 동의</label>
+        <div class="consent-box">
+          <div class="consent-scroll" id="consentText">
+            <p><strong>수집 항목 :</strong> 이름(실명제보 시), 이메일, 휴대폰 번호(실명제보 시), 제보내용</p>
+            <p><strong>수집 및 이용 목적 :</strong> 제보 접수 확인, 추가확인 및 처리결과 통보</p>
+            <p><strong>보유기간 :</strong> 관련 법령 및 내부 규정에 따름</p>
+            <p>상세한 개인정보 처리방침은 실제 운영 시 별도 페이지에 기재되어야 합니다. (이곳은 모형 텍스트입니다.)</p>
+            <p style="margin-top:40px">[스크롤 테스트] 더 많은 동의문 텍스트가 여기에 들어갑니다. 사용자는 스크롤하여 내용을 확인한 뒤 체크박스에 동의해야 합니다.</p>
+          </div>
+          <div class="consent-actions">
+            <input type="checkbox" id="consentCheck">
+            <label for="consentCheck" class="small">동의합니다(필수)</label>
+            <span class="small" style="margin-left:auto">(스크롤 후 동의 가능)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>제보 방식</label>
+        <div class="row">
+          <label class="col"><input type="radio" name="mode" value="real" checked> 실명 제보</label>
+          <label class="col"><input type="radio" name="mode" value="anon"> 익명 제보</label>
+        </div>
+      </div>
+
+      <form id="reportForm">
+        <div id="realFields">
+          <div class="field">
+            <label>이름</label>
+            <input type="text" id="name" placeholder="홍길동">
+          </div>
+          <div class="field">
+            <label>휴대폰 번호</label>
+            <input type="tel" id="phone" placeholder="010-1234-5678">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>이메일 (인증 필수)</label>
+          <div style="display:flex;gap:8px;align-items:flex-start">
+            <input type="email" id="email" placeholder="example@company.co.kr">
+            <button type="button" id="sendCodeBtn" class="btn secondary">인증코드 전송</button>
+          </div>
+          <div id="verificationRow" class="hidden" style="margin-top:8px;display:flex;gap:8px;align-items:center">
+            <input type="text" id="emailCode" placeholder="인증번호 입력">
+            <button type="button" id="verifyBtn" class="btn">확인</button>
+            <span id="verifyStatus" class="small"></span>
+          </div>
+        </
