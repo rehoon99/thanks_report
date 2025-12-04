@@ -1,59 +1,6 @@
-<!doctype html>
-<html lang="ko">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>사이버감사실 제보 페이지(초안)</title>
-  <style>
-    :root{--bg:#f5f7fb;--card:#ffffff;--accent:#0b6efd;--muted:#6b7280}
-    body{font-family:Inter, "Noto Sans KR", system-ui, -apple-system, Arial; background:var(--bg); margin:0; color:#111}
-    .container{max-width:900px;margin:48px auto;padding:24px}
-    header{display:flex;align-items:center;gap:16px}
-    .logo{width:60px;height:60px;border-radius:8px;background:linear-gradient(135deg,#0b6efd,#7cc1ff);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
-    h1{margin:0;font-size:20px}
-    p.lead{color:var(--muted);margin-top:8px}
-
-    .card{background:var(--card);border-radius:12px;padding:20px;margin-top:20px;box-shadow:0 6px 18px rgba(10,20,40,0.06)}
-    h2{margin:0 0 12px 0}
-    ul{padding-left:20px}
-
-    .btn{display:inline-block;padding:10px 16px;border-radius:8px;background:var(--accent);color:#fff;text-decoration:none;border:none;cursor:pointer}
-    .btn.secondary{background:#eee;color:#111}
-
-    .footer-note{font-size:13px;color:var(--muted);margin-top:16px}
-
-    /* modal */
-    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:none;align-items:center;justify-content:center;padding:20px}
-    .modal{width:100%;max-width:720px;background:var(--card);border-radius:12px;padding:20px;box-shadow:0 12px 30px rgba(10,20,40,0.3); max-height:90vh; overflow-y:auto;}
-    .modal h3{margin-top:0}
-    .flex{display:flex;gap:12px}
-    .field{margin-bottom:12px}
-    label{display:block;font-weight:600;margin-bottom:6px}
-    input[type=text], input[type=email], textarea, input[type=tel]{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef}
-    textarea{min-height:120px}
-
-    .consent-box{border:1px solid #e6e9ef;border-radius:8px;padding:0;overflow:hidden}
-    .consent-scroll{max-height:120px;overflow:auto;padding:12px;background:#fafbfd;border-bottom:1px solid #e6e9ef}
-    .consent-actions{padding:12px;display:flex;align-items:center;gap:12px}
-
-    .row{display:flex;gap:12px}
-    .col{flex:1}
-    .small{font-size:13px;color:var(--muted)}
-
-    .hidden{display:none}
-
-    .note-success{color:green;font-weight:600}
-
-    .code-box{display:inline-block;padding:8px 10px;border-radius:6px;background:#f1f7ff;border:1px solid #d6eaff;font-family:monospace}
-
-    /* responsive */
-    @media (max-width:600px){.row{flex-direction:column}}
-  </style>
-</head>
-<body>
-  <div class="container">
+<div class="container">
     <header>
-      <div class="logo">감사</div>
+      <div class="logo">감사실</div>
       <div>
         <h1>사이버감사실 — 제보 안내</h1>
         <p class="lead">제보유형과 제보절차 안내 및 제보 버튼(임시 시안)</p>
@@ -70,7 +17,7 @@
         <li><strong>환경·안전 관련 법규 위반 행위</strong>
         <li><strong>기타 회사의 윤리강령에 위배되는 행위</strong>
       </ul>
-      
+
       <h2 style="margin-top:16px">제보절차</h2>
       <ol>
         <li>제보자는 아래 <em>제보하기</em> 버튼을 클릭하여 제보창을 연다.</li>
@@ -82,12 +29,9 @@
       <div style="margin-top:18px">
         <button id="openBtn" class="btn">제보하기
         
-    </div>
+      
 
-    <div id="preview" class="card" style="margin-top:20px">
-      <h2>하단 예시: 제보하기 모달 미리보기</h2>
-      <p class="small">아래 모달은 버튼 클릭 시 뜨는 창을 시각적으로 예시한 것입니다.</p>
-    </div>
+      
 
   </div>
 
@@ -144,4 +88,86 @@
             <button type="button" id="verifyBtn" class="btn">확인</button>
             <span id="verifyStatus" class="small"></span>
           </div>
-        </
+        </div>
+
+        <div class="field">
+          <label>제보 유형 선택 *</label>
+          <div class="row">
+            <label class="col"><input type="radio" name="type" value="법령위반"> 법령 및 사규 위반 행위</label>
+            <label class="col"><input type="radio" name="type" value="청탁비리"> 청탁, 배임, 뇌물, 부정 청탁, 리베이트 등 비위 행위</label>
+          </div>
+          <div class="row" style="margin-top:8px">
+            <label class="col"><input type="radio" name="type" value="회계부정"> 회계부정, 허위보고, 내부통제 위반</label>
+            <label class="col"><input type="radio" name="type" value="인권차별"> 인권침해, 직장 내 괴롭힘, 차별 행위</label>
+          </div>
+          <div class="row" style="margin-top:8px">
+            <label class="col"><input type="radio" name="type" value="환경안전"> 환경·안전 관련 법규 위반</label>
+            <label class="col"><input type="radio" name="type" value="윤리위반"> 기타 회사의 윤리강령 위배 행위</label>
+          </div>
+          <div class="row" style="margin-top:8px">
+            <label class="col"><input type="radio" name="type" value="업무부정"> 기타 업무적 고충</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>언제 *</label>
+          <input type="text" id="when" placeholder="ex. 2025년 12월 1일, 12월 중순, 2주일 전쯤 등">
+        </div>
+
+        <div class="field">
+          <label>어디서 *</label>
+          <input type="text" id="where" placeholder="ex. 탕비실, 회의실, 작업룸 등">
+        </div>
+
+        <div class="field">
+          <label>인지 경로 *</label>
+          <div class="row">
+            <label class="col"><input type="radio" name="recognition" value="직접경험"> 내게 일어난 일이라서</label>
+            <label class="col"><input type="radio" name="recognition" value="직접목격"> 내가 직접 보거나 들은 일이라서</label>
+          </div>
+          <div class="row" style="margin-top:8px">
+            <label class="col"><input type="radio" name="recognition" value="동료전달"> 직장 동료에게 들었음</label>
+            <label class="col"><input type="radio" name="recognition" value="외부전달"> 외부인에게 들었음</label>
+          </div>
+          <div class="row" style="margin-top:8px">
+            <label class="col"><input type="radio" name="recognition" value="소문"> 소문으로 들었음</label>
+            <label class="col"><input type="radio" name="recognition" value="기타"> 기타</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>문제의 지속 기간 *</label>
+          <div class="row">
+            <label class="col"><input type="radio" name="duration" value="once"> 한번</label>
+            <label class="col"><input type="radio" name="duration" value="week"> 일주일</label>
+          </div>
+          <div class="row" style="margin-top:8px">
+            <label class="col"><input type="radio" name="duration" value="1-3m"> 1개월 이상 3개월 미만</label>
+            <label class="col"><input type="radio" name="duration" value="3-12m"> 3개월 이상 1년 미만</label>
+          </div>
+          <div class="row" style="margin-top:8px">
+            <label class="col"><input type="radio" name="duration" value="1-3y"> 1년 이상 3년 미만</label>
+            <label class="col"><input type="radio" name="duration" value="3y+"> 3년 이상</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>상세내용 *</label>
+          <textarea id="reportText" placeholder="육하원칙에 따라 구체적으로 작성해 주세요."></textarea>
+        </div>
+
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+          <button type="button" class="btn secondary" id="cancelBtn">취소</button>
+          <button type="submit" class="btn" id="submitBtn">제보하기</button>
+        </div>
+      </form>
+
+      <p id="formNote" class="small" style="margin-top:8px">제출 후 제보 내용은 내부 담당자 이메일로 전달됩니다.</p>
+
+      <div id="result" class="hidden" style="margin-top:12px;border-top:1px dashed #e6e9ef;padding-top:12px">
+        <p class="note-success">제보가 성공적으로 제출되었습니다.</p>
+        <p class="small">관리자에게 전달된 이메일 예시:</p>
+        <pre class="code-box" id="emailPreview">(전달될 이메일 미리보기)</pre>
+      </div>
+    </div>
+  </div>
